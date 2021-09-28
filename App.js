@@ -1,21 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import animeApi from './src/api/anime.api';
 
-export default function App() {
+const App = () => {
+  const [results, setResults] = useState('');
+
+  const getResults = async () => {
+    try {
+      const response = await animeApi.get('?filter[categories]=future');
+      setResults(response.data);
+    } catch (err) {
+      console.log("Something wrong");
+    }
+  };
+
+  useEffect(()=>{
+    getResults();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text>Anime</Text>
+      <FlatList
+        data={results}
+        keyExtractor={item=>item.id}
+        renderItem={({ item }) =>(
+          <Text> 
+            {item.canonicalTitle}
+          </Text>
+        )}
+      />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+    marginTop: 15,
+  }
 });
+
+export default App;
