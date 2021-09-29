@@ -5,9 +5,11 @@ import animeApi from './src/api/anime.api';
 const App = () => {
   const [results, setResults] = useState('');
 
+  console.log(results);
+
   const getResults = async () => {
-    try {
-      const response = await animeApi.get('?filter[categories]=future');
+    try {      
+      const response = await animeApi.get('?page[limit]=5');
       setResults(response.data);
     } catch (err) {
       console.log("Something wrong");
@@ -22,11 +24,11 @@ const App = () => {
     <View style={styles.container}>
       <Text>Anime</Text>
       <FlatList
-        data={results}
-        keyExtractor={item=>item.id}
+        data={results.data}
+        keyExtractor={(item)=>item.id.toString()}
         renderItem={({ item }) =>(
           <Text> 
-            {item.canonicalTitle}
+            {item.attributes.slug}
           </Text>
         )}
       />
