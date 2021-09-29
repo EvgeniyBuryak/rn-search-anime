@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseUrl: 'https://kitsu.io/api/edge/anime',
+    baseURL: 'https://kitsu.io/api/edge/anime',
+    headers: { 'content-type': 'application/vnd.api+json' },
 });
-
-// https://kitsu.io/api/edge/anime?filter[categories]=future
