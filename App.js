@@ -1,16 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import animeApi from './src/api/anime.api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { getArrayAnime } from './src/api/anime.api';
 
 const App = () => {
   const [results, setResults] = useState('');
 
-  console.log(results);
+  //console.log(results);
+
+  const keyExtractor = useCallback((item)=>item.id.toString(), []);
+
+  const renderItem = useCallback(({ item }) =>(
+    <View>
+      <Text> 
+        {item.attributes.titles.en}
+      </Text>
+      <Image source={{ uri: item.attributes.titles.en}} />
+    </View>
+  ), []);
 
   const getResults = async () => {
     try {      
-      const response = await animeApi.get('?page[limit]=5');
-      setResults(response.data);
+      const result = await getArrayAnime();
+
+      setResults(result);
+
     } catch (err) {
       console.log("Something wrong");
     }
@@ -24,13 +37,9 @@ const App = () => {
     <View style={styles.container}>
       <Text>Anime</Text>
       <FlatList
-        data={results.data}
-        keyExtractor={(item)=>item.id.toString()}
-        renderItem={({ item }) =>(
-          <Text> 
-            {item.attributes.slug}
-          </Text>
-        )}
+        data={results}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
       />
     </View>
   );
