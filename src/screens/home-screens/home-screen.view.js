@@ -2,19 +2,11 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { getArrayAnime } from '../../api/anime.api';
 import Toast from 'react-native-easy-toast';
-import ResultsDetail from './views/results-detail.view';
+import ResultsList from './views/results-list.view'
 
-const App = ({ navigation }) => {
+const HomeScreen = () => {
   const [results, setResults] = useState('');
   const toastRef = useRef(null);
-
-  const keyExtractor = useCallback( item => item.id.toString(), []);
-  const renderItem = useCallback( ({item}) => {
-      return (
-          <TouchableOpacity onPress={() => navigation.navigate('ResultsShow')}>
-            <ResultsDetail result={item} />
-          </TouchableOpacity>
-      )}, []);
 
   const getResults = async () => {
     try {      
@@ -28,24 +20,17 @@ const App = ({ navigation }) => {
   };
 
   useEffect(()=>{
-    
+
     getResults();
     
     toastRef.current.show('Hello World!', 2000);
-
   }, []);
 
   return (
     <View style={styles.container}>
-      <Toast ref={toastRef} 
-        position='top'
-      />
+      <Toast ref={toastRef} position='top' />
       <Text>Anime</Text>
-      <FlatList
-        data={results}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-      />
+      <ResultsList results={results}/>
     </View>
   );
 };
@@ -59,4 +44,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+export default HomeScreen;
