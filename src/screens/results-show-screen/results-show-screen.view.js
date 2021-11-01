@@ -8,7 +8,16 @@ const ResultsShowScreen = ({ navigation }) => {
 
     const keyExtractor = useCallback( item =>{ item.id.toString() },[]);
     const renderItem = useCallback(({item})=>{
-        return <Image style={styles.image} source={{ uri: item.attributes.posterImage.medium }} />
+        return (
+            <View style={styles.container}>
+                <Text style={styles.name} > Title: { item.attributes.titles.en } </Text>
+                <Text style={styles.name} > Episode count: { item.attributes.episodeCount } </Text>
+                <Text style={styles.name} > Length minutes: { item.attributes.episodeLength } </Text>
+                <Text style={styles.name} > Age rating: { item.attributes.ageRating } </Text>
+                <Text style={styles.name} > Average rating: { item.attributes.averageRating } </Text>
+                <Image style={styles.image} source={{ uri: item.attributes.posterImage.medium }} />
+            </View>
+        );
 
     }, []);
 
@@ -23,9 +32,6 @@ const ResultsShowScreen = ({ navigation }) => {
 
     return (
         <View>
-            <Text>
-                Results Show Screen
-            </Text>
             <FlatList
                 data={results}
                 keyExtractor={keyExtractor}
@@ -36,11 +42,19 @@ const ResultsShowScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        marginLeft: 15,
+        marginTop: 10
+    },
     image: {
         width: 250,
         height: 360,
         borderRadius: 4
     },
+    name: {
+        fontWeight: 'bold',
+        fontSize: 16,
+    }
 });
 
 export default ResultsShowScreen;
