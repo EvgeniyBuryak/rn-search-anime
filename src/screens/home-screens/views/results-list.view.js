@@ -16,6 +16,7 @@ const ResultsList = ({ results, navigation }) => {
     return (
         <View>
           <FlatList
+            horizontal={true}
             showsVerticalScrollIndicator={false}
             data={results}
             keyExtractor={keyExtractor}
